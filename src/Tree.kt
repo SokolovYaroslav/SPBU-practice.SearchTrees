@@ -1,18 +1,18 @@
 /**
 * Created by yaroslav on 27.02.17.
 */
-interface Tree <T : Comparable<T>> : Iterable<Node<T>> {
+interface Tree <K : Comparable<K>, V> : Iterable<Node<K, V>> {
 	
-	override fun iterator(): Iterator<Node<T>> {
+	override fun iterator(): Iterator<Node<K, V>> {
 		return TreeIterator(this)
 	}
 	
-	public fun getRoot(): Node<T>?
-	public fun addByKey(key: T, value: MutableList<Any>)
-	public fun deleteNodeByKey(key: T)
+	public fun getRoot(): Node<K, V>?
+	public fun addByKey(key: K, value: V)
+	public fun deleteNodeByKey(key: K)
 	
-	public fun getHeightByKey(key: T): Int {
-		var currentNode: Node<T>? = getRoot()
+	public fun getHeightByKey(key: K): Int {
+		var currentNode: Node<K, V>? = getRoot()
 		var height: Int = 0
 		
 		loop@ while (currentNode != null) {
@@ -27,8 +27,8 @@ interface Tree <T : Comparable<T>> : Iterable<Node<T>> {
 		return height
 	}
 	
-	public fun searchByKey(key: T): Node<T>? {
-		var currentNode: Node<T>? = getRoot()
+	public fun searchByKey(key: K): Node<K, V>? {
+		var currentNode: Node<K, V>? = getRoot()
 		
 		loop@ while (currentNode != null) {
 			when {
@@ -41,24 +41,24 @@ interface Tree <T : Comparable<T>> : Iterable<Node<T>> {
 		return currentNode
 	}
 	
-	public fun deleteValueByKey(key: T, value: MutableList<Any>):Int {
-		val deletingNode = searchByKey(key)
-		if (deletingNode != null) {
-			deletingNode.deleteValue(value)
-			return 0
-		}
-		else {
-			return 1
-		}
-	}
+//	public fun deleteValueByKey(key: K, value: MutableList<Any>):Int {
+//		val deletingNode = searchByKey(key)
+//		if (deletingNode != null) {
+//			deletingNode.deleteValue(value)
+//			return 0
+//		}
+//		else {
+//			return 1
+//		}
+//	}
 	
-	public fun minByNode(subRoot: Node<T>? = getRoot()): Node<T>? {
+	public fun minByNode(subRoot: Node<K, V>? = getRoot()): Node<K, V>? {
 		if (subRoot == null) {
 			return null
 		}
 		else {
-			var previousNode: Node<T> = subRoot
-			var currentNode: Node<T>? = subRoot
+			var previousNode: Node<K, V> = subRoot
+			var currentNode: Node<K, V>? = subRoot
 			
 			while (currentNode != null) {
 				previousNode = currentNode
@@ -69,13 +69,13 @@ interface Tree <T : Comparable<T>> : Iterable<Node<T>> {
 		}
 	}
 	
-	public fun maxByNode(subRoot: Node<T>? = getRoot()): Node<T>? {
+	public fun maxByNode(subRoot: Node<K, V>? = getRoot()): Node<K, V>? {
 		if (subRoot == null) {
 			return null
 		}
 		else {
-			var previousNode: Node<T> = subRoot
-			var currentNode: Node<T>? = subRoot
+			var previousNode: Node<K, V> = subRoot
+			var currentNode: Node<K, V>? = subRoot
 			
 			while (currentNode != null) {
 				previousNode = currentNode

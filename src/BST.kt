@@ -1,44 +1,36 @@
 /**
  * Created by yaroslav on 28.02.17.
  */
-class BST<T : Comparable<T>>(internal var root: Node<T>? = null) : Tree<T> {
-	override fun getRoot(): Node<T>? {
+class BST<K : Comparable<K>, V>(private var root: Node<K, V>? = null) : Tree<K, V> {
+	override fun getRoot(): Node<K, V>? {
 		return this.root
 	}
 	
-	override fun addByKey(key: T, value: MutableList<Any>) {
-		val newNode = Node<T>(key, value)
-		var currentNode: Node<T>? = root
-		var previousNode: Node<T>? = null
+	override fun addByKey(key: K, value: V) {
+		val newNode = Node<K, V>(key, value)
+		var currentNode: Node<K, V>? = root
+		var previousNode: Node<K, V>? = null
 		
 		while (currentNode != null) {
 			previousNode = currentNode
 			when {
-				newNode.key < currentNode.key    -> {
-					currentNode = currentNode.leftChild
-				}
-				newNode.key > currentNode.key -> {
-					currentNode = currentNode.rightChild
-				}
+				newNode.key < currentNode.key    -> currentNode = currentNode.leftChild
+				newNode.key > currentNode.key -> currentNode = currentNode.rightChild
 				newNode.key == currentNode.key -> {
-					currentNode.addValue(newNode.getValue())
+//					currentNode.addValue(newNode.getValue())
 					return
 				}
 			}
 		}
 		newNode.parent = previousNode
-		if (previousNode == null) {
-			root = newNode
-		}
-		else if (newNode.key < previousNode.key) {
-			previousNode.leftChild = newNode
-		}
-		else {
-			previousNode.rightChild = newNode
+		when {
+			previousNode == null -> root = newNode
+			newNode.key < previousNode.key -> previousNode.leftChild = newNode
+			newNode.key > previousNode.key -> previousNode.rightChild = newNode
 		}
 	}
 	
-	override fun deleteNodeByKey(key: T) {
+	override fun deleteNodeByKey(key: K) {
 		val deletingNode = searchByKey(key) ?: return
 		
 		when {

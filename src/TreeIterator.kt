@@ -1,7 +1,7 @@
 /**
  * Created by yaroslav on 03.03.17.
  */
-class TreeIterator<T : Comparable<T>>(val tree: Tree<T>): Iterator<Node<T>> {
+class TreeIterator<K : Comparable<K>, V>(val tree: Tree<K, V>): Iterator<Node<K, V>> {
 	
 	var next = tree.maxByNode()
 	
@@ -9,11 +9,11 @@ class TreeIterator<T : Comparable<T>>(val tree: Tree<T>): Iterator<Node<T>> {
 		return next != null
 	}
 	
-	override fun next(): Node<T> {
-		if (next == null) {
-			throw NullPointerException()
-		}
-		val peviousNode = next
+	override fun next(): Node<K, V> {
+//		if (next == null) {
+//			throw NullPointerException()
+//		}
+		val previousNode = next
 		
 		if (next!!.leftChild != null) {
 			next = tree.maxByNode(next!!.leftChild)
@@ -25,6 +25,6 @@ class TreeIterator<T : Comparable<T>>(val tree: Tree<T>): Iterator<Node<T>> {
 			next = next!!.parent
 		}
 			
-		return peviousNode!!
+		return previousNode!!
 	}
 }
