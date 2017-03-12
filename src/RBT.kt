@@ -28,7 +28,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 			newNode.key < previousNode.key -> previousNode.leftChild = newNode
 			newNode.key > previousNode.key -> previousNode.rightChild = newNode
 		}
-		newNode.isRed = true
+		newNode.isRed = Colour.Red
 		fixupAfterAdd(newNode)
 	}
 	
@@ -38,50 +38,56 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 	
 	private fun fixupAfterAdd(newNode: Node<K, V>) {
 		if (newNode.parent == null) {
-			newNode.isRed = false
+			newNode.isRed = Colour.Black
 			
 			return
 		}
 		else {
 			var node = newNode
-			while (node.parent!!.isRed == true) {
+			while (node.parent != null && node.parent!!.isRed == Colour.Red) {
+				if (newNode.parent == null) {
+					newNode.isRed = Colour.Black
+					
+					return
+				}
 				if (node.parent == node.parent!!.parent!!.leftChild) {
 					val uncle = node.parent!!.parent!!.rightChild
-					if (uncle == null || uncle.isRed == false) {
+					if (uncle == null || uncle.isRed == Colour.Black) {
 						if (node == node.parent!!.rightChild) {
 							node = node.parent!!
 							node.rotateLeft(this)
 						}
-						node.parent!!.isRed = false
-						node.parent!!.parent!!.isRed = true
+						node.parent!!.isRed = Colour.Black
+						node.parent!!.parent!!.isRed = Colour.Red
 						node.parent!!.parent!!.rotateRight(this)
 					}
 					else {
-						node.parent!!.isRed = false
-						uncle.isRed = false
-						node.parent!!.parent!!.isRed = true
+						node.parent!!.isRed = Colour.Black
+						uncle.isRed = Colour.Black
+						node.parent!!.parent!!.isRed = Colour.Red
 						node = node.parent!!.parent!!
 					}
 				}
 				else {
 					val uncle = node.parent!!.parent!!.leftChild
-					if (uncle == null || uncle.isRed == false) {
+					if (uncle == null || uncle.isRed == Colour.Black) {
 						if (node == node.parent!!.leftChild) {
 							node = node.parent!!
 							node.rotateRight(this)
 						}
-						node.parent!!.isRed = false
-						node.parent!!.parent!!.isRed = true
+						node.parent!!.isRed = Colour.Black
+						node.parent!!.parent!!.isRed = Colour.Red
 						node.parent!!.parent!!.rotateLeft(this)
 					}
 					else {
-						node.parent!!.isRed = false
-						uncle.isRed = false
-						node.parent!!.parent!!.isRed = true
+						node.parent!!.isRed = Colour.Black
+						uncle.isRed = Colour.Black
+						node.parent!!.parent!!.isRed = Colour.Red
 						node = node.parent!!.parent!!
 					}
 				}
 			}
+			root!!.isRed = Colour.Black
 		}
 	}
 	

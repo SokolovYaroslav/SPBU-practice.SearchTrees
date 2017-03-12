@@ -3,7 +3,7 @@
  */
 class Node <K : Comparable<K>, V>(val key: K, private var value: V) {
 		
-	internal var isRed: Boolean = false
+	internal var isRed: Colour = Colour.Black
 	internal var leftChild: Node<K, V>? = null
 	internal var rightChild: Node<K, V>? = null
 	internal var parent: Node<K, V>? = null
@@ -11,7 +11,7 @@ class Node <K : Comparable<K>, V>(val key: K, private var value: V) {
 //	public fun addValue(newValue: MutableList<Any>) = this.value.addAll(newValue)
 //	public fun deleteValue(deletingValue: MutableList<Any>) = this.value.removeAll { it in deletingValue }
 	public fun getValue() = this.value
-	public fun getColour() = isRed
+	public fun getColour() = isRed.bool
 	
 	internal fun rotateLeft(tree: RBT<K, V>) {
 		if (this.rightChild == null) {
@@ -30,6 +30,7 @@ class Node <K : Comparable<K>, V>(val key: K, private var value: V) {
 				this == this.parent!!.leftChild -> this.parent!!.leftChild = newTop
 				this == this.parent!!.rightChild -> this.parent!!.rightChild = newTop
 			}
+			newTop.leftChild = this
 			this.parent = newTop
 		}
 	}
@@ -41,7 +42,7 @@ class Node <K : Comparable<K>, V>(val key: K, private var value: V) {
 		else {
 			val newTop: Node<K, V> = this.leftChild!!
 			
-			this.leftChild = leftChild!!.rightChild
+			this.leftChild = newTop!!.rightChild
 			if (newTop.rightChild != null) {
 				newTop.rightChild!!.parent = this
 			}
@@ -51,6 +52,7 @@ class Node <K : Comparable<K>, V>(val key: K, private var value: V) {
 				this == this.parent!!.rightChild -> this.parent!!.rightChild = newTop
 				this == this.parent!!.leftChild -> this.parent!!.leftChild = newTop
 			}
+			newTop.rightChild = this
 			this.parent = newTop
 		}
 	}
