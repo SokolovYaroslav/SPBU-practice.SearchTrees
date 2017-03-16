@@ -44,82 +44,82 @@ class BST<K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K,
 		}
 	}
 	
-	override fun deleteNodeByKey(key: K) {
-		val deletingNode = searchByKey(key) ?: return
-		
-		when {
-			deletingNode.leftChild == null && deletingNode.rightChild == null -> {
-				when {
-					deletingNode.parent == null -> root = null
-					deletingNode.key < deletingNode.parent!!.key -> deletingNode.parent!!.leftChild = null
-					deletingNode.key > deletingNode.parent!!.key -> deletingNode.parent!!.rightChild = null
-				}
-			}
-			deletingNode.leftChild == null -> {
-				when {
-					deletingNode.parent == null -> {
-						root = deletingNode.rightChild
-						deletingNode.rightChild!!.parent = null
-					}
-					deletingNode.key < deletingNode.parent!!.key -> {
-						deletingNode.parent!!.leftChild = deletingNode.rightChild
-						deletingNode.rightChild!!.parent = deletingNode.parent
-					}
-					deletingNode.key > deletingNode.parent!!.key -> {
-						deletingNode.parent!!.rightChild = deletingNode.rightChild
-						deletingNode.rightChild!!.parent = deletingNode.parent
-					}
-				}
-			}
-			deletingNode.rightChild == null -> {
-				when {
-					deletingNode.parent == null -> {
-						root = deletingNode.leftChild
-						deletingNode.leftChild!!.parent = null
-					}
-					deletingNode.key < deletingNode.parent!!.key -> {
-						deletingNode.parent!!.leftChild = deletingNode.leftChild
-						deletingNode.leftChild!!.parent = deletingNode.parent
-					}
-					deletingNode.key > deletingNode.parent!!.key -> {
-						deletingNode.parent!!.rightChild = deletingNode.leftChild
-						deletingNode.leftChild!!.parent = deletingNode.parent
-					}
-				}
-			}
-			deletingNode.leftChild != null && deletingNode.rightChild != null -> {
-				val newNode = minByNode(deletingNode.rightChild)
-				
-				when {
-					deletingNode.parent == null -> {
-						when {
-							newNode == deletingNode.rightChild -> newNode!!.leftChild = deletingNode.leftChild
-							newNode != deletingNode.rightChild -> {
-								newNode!!.parent!!.leftChild = null
-								newNode.leftChild = deletingNode.leftChild
-								newNode.rightChild = deletingNode.rightChild
-							}
-						}
-						root = newNode
-					}
-					deletingNode.parent != null -> {
-						when {
-							newNode == deletingNode.rightChild -> {
-								newNode!!.leftChild = deletingNode.leftChild
-								newNode.parent = deletingNode.parent
-							}
-							newNode != deletingNode.rightChild -> {
-								newNode!!.parent!!.leftChild = null
-								newNode.leftChild = deletingNode.leftChild
-								newNode.rightChild = deletingNode.rightChild
-								newNode.parent = deletingNode.parent
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+//	override fun deleteNodeByKey(key: K) {
+//		val deletingNode = searchByKey(key) ?: return
+//
+//		when {
+//			deletingNode.leftChild == null && deletingNode.rightChild == null -> {
+//				when {
+//					deletingNode.parent == null -> root = null
+//					deletingNode.key < deletingNode.parent!!.key -> deletingNode.parent!!.leftChild = null
+//					deletingNode.key > deletingNode.parent!!.key -> deletingNode.parent!!.rightChild = null
+//				}
+//			}
+//			deletingNode.leftChild == null -> {
+//				when {
+//					deletingNode.parent == null -> {
+//						root = deletingNode.rightChild
+//						deletingNode.rightChild!!.parent = null
+//					}
+//					deletingNode.key < deletingNode.parent!!.key -> {
+//						deletingNode.parent!!.leftChild = deletingNode.rightChild
+//						deletingNode.rightChild!!.parent = deletingNode.parent
+//					}
+//					deletingNode.key > deletingNode.parent!!.key -> {
+//						deletingNode.parent!!.rightChild = deletingNode.rightChild
+//						deletingNode.rightChild!!.parent = deletingNode.parent
+//					}
+//				}
+//			}
+//			deletingNode.rightChild == null -> {
+//				when {
+//					deletingNode.parent == null -> {
+//						root = deletingNode.leftChild
+//						deletingNode.leftChild!!.parent = null
+//					}
+//					deletingNode.key < deletingNode.parent!!.key -> {
+//						deletingNode.parent!!.leftChild = deletingNode.leftChild
+//						deletingNode.leftChild!!.parent = deletingNode.parent
+//					}
+//					deletingNode.key > deletingNode.parent!!.key -> {
+//						deletingNode.parent!!.rightChild = deletingNode.leftChild
+//						deletingNode.leftChild!!.parent = deletingNode.parent
+//					}
+//				}
+//			}
+//			deletingNode.leftChild != null && deletingNode.rightChild != null -> {
+//				val newNode = minByNode(deletingNode.rightChild)
+//
+//				when {
+//					deletingNode.parent == null -> {
+//						when {
+//							newNode == deletingNode.rightChild -> newNode!!.leftChild = deletingNode.leftChild
+//							newNode != deletingNode.rightChild -> {
+//								newNode!!.parent!!.leftChild = null
+//								newNode.leftChild = deletingNode.leftChild
+//								newNode.rightChild = deletingNode.rightChild
+//							}
+//						}
+//						root = newNode
+//					}
+//					deletingNode.parent != null -> {
+//						when {
+//							newNode == deletingNode.rightChild -> {
+//								newNode!!.leftChild = deletingNode.leftChild
+//								newNode.parent = deletingNode.parent
+//							}
+//							newNode != deletingNode.rightChild -> {
+//								newNode!!.parent!!.leftChild = null
+//								newNode.leftChild = deletingNode.leftChild
+//								newNode.rightChild = deletingNode.rightChild
+//								newNode.parent = deletingNode.parent
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
 	
 	internal fun maxByNode(subRoot: Node<K, V>? = root): Node<K, V>? {
 		if (subRoot == null) {
