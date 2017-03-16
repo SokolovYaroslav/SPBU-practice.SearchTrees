@@ -1,8 +1,8 @@
 /**
  * Created by yaroslav on 05.03.17.
  */
-class TreePrinter <K : Comparable<K>, V> {
-	public fun print(tree: Tree<K, V>) {
+class RBTPrinter <K : Comparable<K>, V> {
+	public fun print(tree: RBT<K, V>) {
 		for (node in tree) {
 			for (i in 1..tree.getHeightByKey(node.key) * 5) {
 				print(' ')

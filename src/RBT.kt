@@ -1,9 +1,23 @@
 /**
  * Created by yaroslav on 05.03.17.
  */
-class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K, V>{
-	override fun getRoot(): Node<K, V>? {
-		return this.root
+class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K, V>, Iterable<Node<K, V>>{
+	override fun iterator(): Iterator<Node<K, V>> {
+		return RBTIterator(this)
+	}
+		
+	override fun searchByKey(key: K): Node<K, V>? {
+		var currentNode: Node<K, V>? = root
+		
+		loop@ while (currentNode != null) {
+			when {
+				key < currentNode.key -> currentNode = currentNode.leftChild
+				key > currentNode.key -> currentNode = currentNode.rightChild
+				key == currentNode.key -> break@loop
+			}
+		}
+		
+		return currentNode
 	}
 	
 	override fun addByKey(key: K, value: V) {
@@ -91,4 +105,53 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		}
 	}
 	
+	internal fun maxByNode(subRoot: Node<K, V>? = root): Node<K, V>? {
+		if (subRoot == null) {
+			return null
+		}
+		else {
+			var previousNode: Node<K, V> = subRoot
+			var currentNode: Node<K, V>? = subRoot
+			
+			while (currentNode != null) {
+				previousNode = currentNode
+				currentNode = currentNode.rightChild
+			}
+			
+			return previousNode
+		}
+	}
+	
+	internal fun minByNode(subRoot: Node<K, V>? = root): Node<K, V>? {
+		if (subRoot == null) {
+			return null
+		}
+		else {
+			var previousNode: Node<K, V> = subRoot
+			var currentNode: Node<K, V>? = subRoot
+			
+			while (currentNode != null) {
+				previousNode = currentNode
+				currentNode = currentNode.leftChild
+			}
+			
+			return previousNode
+		}
+	}
+	
+	internal fun getHeightByKey(key: K): Int {
+		var currentNode: Node<K, V>? = root
+		var height: Int = 0
+		
+		loop@ while (currentNode != null) {
+			when {
+				key < currentNode.key -> currentNode = currentNode.leftChild
+				key > currentNode.key -> currentNode = currentNode.rightChild
+				key == currentNode.key -> break@loop
+			}
+			height++
+		}
+		
+		return height
+	}
 }
