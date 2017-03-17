@@ -154,4 +154,23 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		
 		return height
 	}
+	
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (other?.javaClass != javaClass) return false
+		
+		other as RBT<*, *>
+		
+		if (root != other.root) return false
+		
+		val otherIterator = other.iterator()
+		
+		for (node1 in this) {
+			if (!otherIterator.hasNext()) return false
+			if (node1 != otherIterator.next()) return false
+		}
+		if (otherIterator.hasNext()) return false
+		
+		return true
+	}
 }

@@ -2,7 +2,18 @@
  * Created by yaroslav on 27.02.17.
  */
 class Node <K : Comparable<K>, V>(val key: K, private var value: V) {
-		
+	
+	override fun equals(other: Any?): Boolean {
+		if (other is Node<*, *>) {
+			if (this.isRed == other.isRed &&
+					this.key == other.key &&
+					this.value == other.value) {
+				return true
+			}
+		}
+		return false
+	}
+	
 	internal var isRed: Colour = Colour.Black
 	internal var leftChild: Node<K, V>? = null
 	internal var rightChild: Node<K, V>? = null
