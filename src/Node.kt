@@ -1,7 +1,7 @@
 /**
  * Created by yaroslav on 27.02.17.
  */
-class Node <K : Comparable<K>, V>(val key: K, private var value: V) {
+class Node <K : Comparable<K>, V>(internal var key: K, internal var value: V) {
 	
 	override fun equals(other: Any?): Boolean {
 		if (other is Node<*, *>) {
@@ -23,6 +23,15 @@ class Node <K : Comparable<K>, V>(val key: K, private var value: V) {
 //	public fun deleteValue(deletingValue: MutableList<Any>) = this.value.removeAll { it in deletingValue }
 	public fun getValue() = this.value
 	public fun getColour() = isRed.bool
+	
+	internal fun recoloring() {
+		if (this.getColour()) {
+			this.isRed = Colour.Black
+		}
+		else {
+			this.isRed = Colour.Red
+		}
+	}
 	
 	internal fun rotateLeft(tree: RBT<K, V>) {
 		if (this.rightChild == null) {

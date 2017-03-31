@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions.*
  * Created by yaroslav on 16.03.17.
  */
 internal class RBTTest {
+	
 	@Test
 	fun searchInEmptyTree() {
 		val tree = RBT<Int, Int>()

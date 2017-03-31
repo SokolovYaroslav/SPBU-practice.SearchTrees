@@ -2,6 +2,10 @@
  * Created by yaroslav on 05.03.17.
  */
 class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K, V>, Iterable<Node<K, V>>{
+	override fun getRoot(): Node<K, V>? {
+		return root
+	}
+	
 	override fun iterator(): Iterator<Node<K, V>> {
 		return RBTIterator(this)
 	}
@@ -46,9 +50,172 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		fixupAfterAdd(newNode)
 	}
 	
-//	override fun deleteNodeByKey(key: K) {
-//		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//	}
+	override fun deleteNodeByKey(key: K, nodeStart: Node<K, V>?) {
+		val node = searchByKey(key) ?: return
+		val min = minByNode(node.rightChild)
+		
+		when {
+			((node.rightChild != null) && (node.leftChild != null)) -> {
+				node.key = min!!.key
+				node.value = min.value
+				deleteNodeByKey(min.key, min)
+			}
+			((node == root) && node.leftChild == null && node.rightChild == null) -> {
+				root = null
+				return
+			}
+			(node.getColour() && node.leftChild == null && node.rightChild == null)	-> {
+				if (node.key < node.parent!!.key) {
+					node.parent!!.leftChild = null
+				} else {
+					node.parent!!.rightChild = null
+				}
+				return
+			}
+			(!node.getColour() && ((node.leftChild != null) && (node.leftChild!!.getColour())))	-> {
+				node.key = node.leftChild!!.key
+				node.leftChild = null
+				return
+			}
+			(!node.getColour() && (node.rightChild != null) && (node.rightChild!!.getColour()))	-> {
+				node.key = node.rightChild!!.key
+				node.rightChild = null
+				return
+			}
+			else -> {
+				case1(node)
+			}
+		}
+		
+		if (node.key == key) {
+			if (node.key < node.parent!!.key) {
+				node.parent!!.leftChild = null
+			} else {
+				node.parent!!.rightChild = null
+			}
+		}
+		return
+	}
+	
+	private fun case1(node: Node<K, V>) {
+		if (node == root) {
+			node.isRed = Colour.Black
+			return
+		}
+		
+		if (node.key < node.parent!!.key) {
+			case2Left(node)
+		} else {
+			case2Right(node)
+		}
+	}
+	
+	private fun case2Left(node: Node<K, V>) {
+		val brother = node.brother()
+		
+		if (brother!!.getColour()) {
+			node.parent!!.recoloring()
+			brother.recoloring()
+			node.parent!!.rotateLeft(this)
+			case1(node)
+			return
+		}
+		
+		case3(node)
+	}
+	
+	private fun case2Right(node: Node<K, V>) {
+		val brother = node.brother()
+		
+		if (brother!!.getColour()) {
+			node.parent!!.recoloring()
+			brother.recoloring()
+			node.parent!!.rotateRight(this)
+			case1(node)
+			return
+		}
+		
+		case3(node)
+	}
+	
+	private fun case3(node: Node<K, V>) {
+		val brother = node.brother()
+		
+		if (((brother!!.leftChild == null) || !brother.leftChild!!.getColour())
+				&&
+				((brother.rightChild == null) || !brother.rightChild!!.getColour()))
+		{
+			node.isRed = Colour.Black
+			brother.recoloring()
+			if (node.parent!!.getColour()) {
+				node.parent!!.recoloring()
+				return
+			}
+			case1(node.parent!!)
+			return
+		}
+		
+		if (node.key < node.parent!!.key) {
+			case4Left(node)
+		} else {
+			case4Right(node)
+		}
+	}
+	
+	private fun case4Left(node: Node<K, V>) {
+		val brother = node.brother()
+		
+		if ((brother!!.rightChild == null) || !brother.rightChild!!.getColour()) {
+			brother.recoloring()
+			brother.leftChild!!.recoloring()
+			brother.rotateRight(this)
+			case1(node)
+			return
+		}
+		
+		case5Left(node)
+	}
+	
+	private fun case4Right(node: Node<K, V>) {
+		val brother = node.brother()
+		
+		if ((brother!!.leftChild == null) || !brother.leftChild!!.getColour()) {
+			brother.recoloring()
+			brother.rightChild!!.recoloring()
+			brother.rotateLeft(this)
+			case1(node)
+			return
+		}
+		
+		case5Right(node)
+	}
+	
+	private fun case5Left(node: Node<K, V>) {
+		val brother = node.brother()
+		
+		if ((brother!!.rightChild != null) && brother.rightChild!!.getColour()) {
+			brother.isRed = node.parent!!.isRed
+			node.isRed = Colour.Black
+			node.parent!!.isRed = Colour.Black
+			brother.rightChild!!.isRed = Colour.Red
+			node.parent!!.rotateLeft(this)
+			return
+		}
+	}
+	
+	private fun case5Right(node: Node<K, V>) {
+		val brother = node.brother()
+		
+		if ((brother!!.leftChild != null) && brother.leftChild!!.getColour()) {
+			brother.isRed = node.parent!!.isRed
+			node.isRed = Colour.Black
+			node.parent!!.isRed = Colour.Black
+			brother.leftChild!!.isRed = Colour.Black
+			node.parent!!.rotateRight(this)
+			return
+		}
+	}
+	
 	
 	private fun fixupAfterAdd(newNode: Node<K, V>) {
 		if (newNode.parent == null) {
