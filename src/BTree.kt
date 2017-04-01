@@ -1,4 +1,5 @@
 import java.util.*
+import kotlin.reflect.jvm.internal.impl.serialization.deserialization.FlexibleTypeDeserializer
 
 /**
  * Created by yaroslav on 31.03.17.
@@ -211,17 +212,7 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 							root = leftBro
 						}
 						else {
-							var previousNode = root
-							var currentNode = root
-							var j = 0
-							while (currentNode.pairs.size != 0) {
-								while (j < currentNode.pairs.size && key > currentNode.pairs[j].first) {
-									j++
-								}
-								previousNode = currentNode
-								currentNode = currentNode.children[j]
-							}
-							previousNode.children[j] = leftBro
+							println("Все плохо!")
 						}
 					}
 					delete(key, leftBro)
@@ -247,17 +238,7 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 							root = deletingNode
 						}
 						else {
-							var previousNode = root
-							var currentNode = root
-							var j = 0
-							while (currentNode.pairs.size != 0) {
-								while (j < currentNode.pairs.size && key > currentNode.pairs[j].first) {
-									j++
-								}
-								previousNode = currentNode
-								currentNode = currentNode.children[j]
-							}
-							previousNode.children[j] = deletingNode
+							println("Все плохо!")
 						}
 					}
 					delete(key, deletingNode)
