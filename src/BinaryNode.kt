@@ -3,16 +3,16 @@
  */
 class BinaryNode<K : Comparable<K>, V>(internal var key: K, internal var value: V) : Node<K, V> {
 	
-	override fun equals(other: Any?): Boolean {
-		if (other is BinaryNode<*, *>) {
-			if (this.isRed == other.isRed &&
-					this.key == other.key &&
-					this.value == other.value) {
-				return true
-			}
-		}
-		return false
-	}
+//	override fun equals(other: Any?): Boolean {
+//		if (other is BinaryNode<*, *>) {
+//			if (this.isRed == other.isRed &&
+//					this.key == other.key &&
+//					this.value == other.value) {
+//				return true
+//			}
+//		}
+//		return false
+//	}
 	
 	internal var isRed: Colour = Colour.Black
 	internal var leftChild: BinaryNode<K, V>? = null
@@ -40,7 +40,7 @@ class BinaryNode<K : Comparable<K>, V>(internal var key: K, internal var value: 
 		else {
 			val newTop: BinaryNode<K, V> = this.rightChild!!
 			
-			this.rightChild = rightChild!!.leftChild
+			this.rightChild = this.rightChild!!.leftChild
 			if (newTop.leftChild != null) {
 				newTop.leftChild!!.parent = this
 			}

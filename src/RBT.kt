@@ -6,6 +6,23 @@ class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : 
 	override fun iterator(): Iterator<BinaryNode<K, V>> {
 		return RBTIterator(this)
 	}
+	
+	public fun isItRbTree():Boolean {
+		if (root==null) return true
+		return blackHeight(root!!)>=0
+	}
+	private fun  blackHeight(node: BinaryNode<K, V>) : Int//check
+	{
+		var leftHeight =0
+		var rightHeight = 0
+		if (node.leftChild != null) leftHeight = blackHeight(node.leftChild!!)
+		if (node.rightChild != null) rightHeight = blackHeight(node.rightChild!!)
+		if (leftHeight!=rightHeight) {
+			return -100
+		}
+		if (!node.getColour()) leftHeight++
+		return leftHeight
+	}
 		
 	override fun search(key: K): V? {
 		val currentNode = searchByKey(key, root)
@@ -77,7 +94,7 @@ class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : 
 				return
 			}
 			(node.getColour() && node.leftChild == null && node.rightChild == null) -> {
-				if (node.key < node.parent!!.key) {
+				if (node == node.parent!!.leftChild) {
 					node.parent!!.leftChild = null
 				} else {
 					node.parent!!.rightChild = null
@@ -86,11 +103,13 @@ class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : 
 			}
 			(!node.getColour() && ((node.leftChild != null) && (node.leftChild!!.getColour()))) -> {
 				node.key = node.leftChild!!.key
+				node.value = node.leftChild!!.value
 				node.leftChild = null
 				return
 			}
 			(!node.getColour() && (node.rightChild != null) && (node.rightChild!!.getColour())) -> {
 				node.key = node.rightChild!!.key
+				node.value = node.rightChild!!.value
 				node.rightChild = null
 				return
 			}
@@ -100,7 +119,7 @@ class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : 
 		}
 		
 		if (node.key == key) {
-			if (node.key < node.parent!!.key) {
+			if (node == node.parent!!.leftChild) {
 				node.parent!!.leftChild = null
 			} else {
 				node.parent!!.rightChild = null
@@ -115,7 +134,7 @@ class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : 
 			return
 		}
 		
-		if (node.key < node.parent!!.key) {
+		if (node == node.parent!!.leftChild) {
 			case2Left(node)
 		} else {
 			case2Right(node)
@@ -167,7 +186,7 @@ class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : 
 			return
 		}
 		
-		if (node.key < node.parent!!.key) {
+		if (node == node.parent!!.leftChild) {
 			case4Left(node)
 		} else {
 			case4Right(node)
@@ -209,7 +228,7 @@ class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : 
 			brother.isRed = node.parent!!.isRed
 			node.isRed = Colour.Black
 			node.parent!!.isRed = Colour.Black
-			brother.rightChild!!.isRed = Colour.Red
+			brother.rightChild!!.isRed = Colour.Black
 			node.parent!!.rotateLeft(this)
 			return
 		}
@@ -334,22 +353,22 @@ class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : 
 		return height
 	}
 	
-	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (other?.javaClass != javaClass) return false
-		
-		other as RBT<*, *>
-		
-		if (root != other.root) return false
-		
-		val otherIterator = other.iterator()
-		
-		for (node1 in this) {
-			if (!otherIterator.hasNext()) return false
-			if (node1 != otherIterator.next()) return false
-		}
-		if (otherIterator.hasNext()) return false
-		
-		return true
-	}
+//	override fun equals(other: Any?): Boolean {
+//		if (this === other) return true
+//		if (other?.javaClass != javaClass) return false
+//
+//		other as RBT<*, *>
+//
+//		if (root != other.root) return false
+//
+//		val otherIterator = other.iterator()
+//
+//		for (node1 in this) {
+//			if (!otherIterator.hasNext()) return false
+//			if (node1 != otherIterator.next()) return false
+//		}
+//		if (otherIterator.hasNext()) return false
+//
+//		return true
+//	}
 }
