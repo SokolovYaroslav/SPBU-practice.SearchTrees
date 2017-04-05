@@ -1,7 +1,7 @@
 /**
  * Created by yaroslav on 31.03.17.
  */
-class BNode <K : Comparable<K>, V>(){
+class BNode <K : Comparable<K>, V>() : Node<K, V> {
 	
 	var leaf: Boolean = true
 	var pairs = ArrayList<Pair<K, V>>()

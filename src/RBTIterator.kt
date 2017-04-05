@@ -1,7 +1,7 @@
 /**
  * Created by yaroslav on 03.03.17.
  */
-class RBTIterator<K : Comparable<K>, V>(val tree: RBT<K, V>): Iterator<Node<K, V>> {
+class RBTIterator<K : Comparable<K>, V>(val tree: RBT<K, V>): Iterator<BinaryNode<K, V>> {
 	
 	var next = tree.maxByNode()
 	
@@ -9,7 +9,7 @@ class RBTIterator<K : Comparable<K>, V>(val tree: RBT<K, V>): Iterator<Node<K, V
 		return next != null
 	}
 	
-	override fun next(): Node<K, V> {
+	override fun next(): BinaryNode<K, V> {
 		val previousNode = next
 		
 		if (next!!.leftChild != null) {

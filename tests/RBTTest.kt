@@ -14,35 +14,35 @@ internal class RBTTest {
 	}
 	@Test
 	fun colour1SizeTree() {
-		val tree = RBT<Int, Int>(Node(2, 90))
+		val tree = RBT<Int, Int>(BinaryNode(2, 90))
 		assertEquals(Colour.Black, tree.root!!.isRed)
 	}
 	@Test
 	fun searchInSize1Tree() {
-		val tree = RBT<Int, Int>(Node(2, 90))
+		val tree = RBT<Int, Int>(BinaryNode(2, 90))
 		assertEquals(null, tree.searchByKey(4334))
-		assertEquals(Node(2, 90), tree.searchByKey(2))
+		assertEquals(BinaryNode(2, 90), tree.searchByKey(2))
 	}
 	@Test
 	fun equalsTree() {
-		val iTree = RBT<Int, Int>(Node(4, 4))
+		val iTree = RBT<Int, Int>(BinaryNode(4, 4))
 		
-		val one = Node<Int, Int>(1, 1)
+		val one = BinaryNode<Int, Int>(1, 1)
 		
-		val seven = Node<Int, Int>(7, 7)
+		val seven = BinaryNode<Int, Int>(7, 7)
 		seven.isRed = Colour.Red
 		
-		val three = Node<Int, Int>(3, 3)
+		val three = BinaryNode<Int, Int>(3, 3)
 		three.isRed = Colour.Red
 		
-		val five = Node<Int, Int>(5, 5)
+		val five = BinaryNode<Int, Int>(5, 5)
 		
-		val eight = Node<Int, Int>(8, 8)
+		val eight = BinaryNode<Int, Int>(8, 8)
 		
-		val six = Node<Int, Int>(6, 6)
+		val six = BinaryNode<Int, Int>(6, 6)
 		six.isRed = Colour.Red
 		
-		val twelve = Node<Int, Int>(12, 12)
+		val twelve = BinaryNode<Int, Int>(12, 12)
 		twelve.isRed = Colour.Red
 		
 		iTree.root!!.leftChild = one
@@ -66,7 +66,7 @@ internal class RBTTest {
 		eight.rightChild = twelve
 		twelve.parent = eight
 		
-		val tree = RBT<Int, Int>(Node(7, 7))
+		val tree = RBT<Int, Int>(BinaryNode(7, 7))
 		tree.addByKey(1, 1)
 		tree.addByKey(4, 4)
 		tree.addByKey(8, 8)

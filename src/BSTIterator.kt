@@ -1,7 +1,7 @@
 /**
  * Created by yaroslav on 14.03.17.
  */
-class BSTIterator<K : Comparable<K>, V>(val tree: BST<K, V>): Iterator<Node<K, V>> {
+class BSTIterator<K : Comparable<K>, V>(val tree: BST<K, V>): Iterator<BinaryNode<K, V>> {
 	
 	var next = tree.maxByNode()
 	
@@ -9,7 +9,7 @@ class BSTIterator<K : Comparable<K>, V>(val tree: BST<K, V>): Iterator<Node<K, V
 		return next != null
 	}
 	
-	override fun next(): Node<K, V> {
+	override fun next(): BinaryNode<K, V> {
 		val previousNode = next
 		
 		if (next!!.leftChild != null) {

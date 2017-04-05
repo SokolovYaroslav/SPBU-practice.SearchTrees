@@ -4,7 +4,7 @@ import kotlin.reflect.jvm.internal.impl.serialization.deserialization.FlexibleTy
 /**
  * Created by yaroslav on 31.03.17.
  */
-class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val t: Int = 1000) : Iterable<BNode<K, V>>{
+class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val t: Int = 1000) : Tree<K, V>, Iterable<BNode<K, V>>{
 	override fun iterator(): Iterator<BNode<K, V>> {
 		return (object : Iterator<BNode<K, V>> {
 			var queue = LinkedList<BNode<K, V>>()
@@ -28,12 +28,8 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 		})
 	}
 	
-	public fun getRoot(): BNode<K, V> {
-		return root
-	}
-	
-	public fun insert(key: K, value: V) {
-		if (searchByKey(key) != null) return
+	override fun insert(key: K, value: V) {
+		if (searchPrivate(key) != null) return
 		
 		val oldRoot = root
 		if (oldRoot.pairs.size == 2 * t - 1) {
@@ -89,8 +85,12 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 		splitingNode.pairs.removeAt(t - 1)
 	}
 	
-	public fun searchByKey(key: K): Pair<K, V>? {
-		var currentNode: BNode<K, V>? = getRoot()?: return null
+	override fun search(key: K): V? {
+		return searchPrivate(key)?.second
+	}
+	
+	private fun searchPrivate(key: K): Pair<K, V>? {
+		var currentNode: BNode<K, V>? = root?: return null
 		
 		while (currentNode != null) {
 			var i = 0
@@ -112,7 +112,11 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 		return null
 	}
 	
-	public fun delete(key: K, startNode: BNode<K, V>? = getRoot()) {
+	override fun delete(key: K) {
+		deletePrivate(key, root)
+	}
+	
+	private fun deletePrivate(key: K, startNode: BNode<K, V>? = root) {
 		var deletingNode: BNode<K, V>? = startNode?: return
 		
 		if (key in deletingNode!!.pairs.map { it.first } && deletingNode.leaf) {
@@ -129,12 +133,12 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 			}
 			if (deletingNode.children[i].pairs.size > t - 1) {
 				val newKey = maxByNode(deletingNode.children[i])
-				delete(newKey.first, deletingNode.children[i])
+				deletePrivate(newKey.first, deletingNode.children[i])
 				deletingNode.pairs[i] = newKey
 			}
 			else if (deletingNode.children[i + 1].pairs.size > t - 1) {
 				val newKey = minByNode(deletingNode.children[i + 1])
-				delete(newKey.first, deletingNode.children[i + 1])
+				deletePrivate(newKey.first, deletingNode.children[i + 1])
 				deletingNode.pairs[i] = newKey
 			}
 			else {
@@ -152,7 +156,7 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 				if (deletingNode == root && deletingNode.pairs.size == 1) {
 					root = leftChild
 				}
-				delete(key, leftChild)
+				deletePrivate(key, leftChild)
 			}
 		}
 		else if (!(key in deletingNode.pairs.map { it.first })) {
@@ -166,7 +170,7 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 			val parentNode = deletingNode
 			deletingNode = deletingNode.children[i]
 			if (deletingNode.pairs.size > t - 1) {
-				delete(key, deletingNode)
+				deletePrivate(key, deletingNode)
 			}
 			else {
 				if (i > 1  && parentNode.children[i - 1].pairs.size > t - 1) {
@@ -178,7 +182,7 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 						leftBro.children.removeAt(leftBro.children.size - 1)
 					}
 					leftBro.pairs.removeAt(leftBro.pairs.size - 1)
-					delete(key, deletingNode)
+					deletePrivate(key, deletingNode)
 				}
 				else if (i < parentNode.pairs.size && parentNode.children[i + 1].pairs.size > t - 1) {
 					val rightBro = parentNode.children[i + 1]
@@ -189,7 +193,7 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 						rightBro.children.removeAt(0)
 					}
 					rightBro.pairs.removeAt(0)
-					delete(key, deletingNode)
+					deletePrivate(key, deletingNode)
 				}
 				else if (i > 1) {
 					val leftBro = parentNode.children[i - 1]
@@ -215,7 +219,7 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 							println("Все плохо!")
 						}
 					}
-					delete(key, leftBro)
+					deletePrivate(key, leftBro)
 				}
 				else if (i < parentNode.children.size) {
 					val rightBro = parentNode.children[i + 1]
@@ -241,7 +245,7 @@ class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val
 							println("Все плохо!")
 						}
 					}
-					delete(key, deletingNode)
+					deletePrivate(key, deletingNode)
 				}
 			}
 		}

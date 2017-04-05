@@ -1,17 +1,25 @@
 /**
  * Created by yaroslav on 05.03.17.
  */
-class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K, V>, Iterable<Node<K, V>>{
-	override fun getRoot(): Node<K, V>? {
-		return root
-	}
+class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : Tree<K, V>, Iterable<BinaryNode<K, V>>{
 	
-	override fun iterator(): Iterator<Node<K, V>> {
+	override fun iterator(): Iterator<BinaryNode<K, V>> {
 		return RBTIterator(this)
 	}
 		
-	override fun searchByKey(key: K): Node<K, V>? {
-		var currentNode: Node<K, V>? = root
+	override fun search(key: K): V? {
+		val currentNode = searchByKey(key, root)
+		
+		if (currentNode == null) {
+			return null
+		}
+		else {
+			return currentNode.value
+		}
+	}
+	
+	private fun searchByKey(key: K, nodeStart: BinaryNode<K, V>?): BinaryNode<K, V>? {
+		var currentNode: BinaryNode<K, V>? = nodeStart
 		
 		loop@ while (currentNode != null) {
 			when {
@@ -24,10 +32,10 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		return currentNode
 	}
 	
-	override fun addByKey(key: K, value: V) {
-		val newNode = Node<K, V>(key, value)
-		var currentNode: Node<K, V>? = root
-		var previousNode: Node<K, V>? = null
+	override fun insert(key: K, value: V) {
+		val newNode = BinaryNode<K, V>(key, value)
+		var currentNode: BinaryNode<K, V>? = root
+		var previousNode: BinaryNode<K, V>? = null
 		
 		while (currentNode != null) {
 			previousNode = currentNode
@@ -50,21 +58,25 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		fixupAfterAdd(newNode)
 	}
 	
-	override fun deleteNodeByKey(key: K, nodeStart: Node<K, V>?) {
-		val node = searchByKey(key) ?: return
+	override fun delete(key: K) {
+		deletePrivate(key, root)
+	}
+	
+	private fun deletePrivate(key: K, nodeStart: BinaryNode<K, V>? = root) {
+		val node = searchByKey(key, nodeStart) ?: return
 		val min = minByNode(node.rightChild)
 		
 		when {
 			((node.rightChild != null) && (node.leftChild != null)) -> {
 				node.key = min!!.key
 				node.value = min.value
-				deleteNodeByKey(min.key, min)
+				deletePrivate(min.key, min)
 			}
 			((node == root) && node.leftChild == null && node.rightChild == null) -> {
 				root = null
 				return
 			}
-			(node.getColour() && node.leftChild == null && node.rightChild == null)	-> {
+			(node.getColour() && node.leftChild == null && node.rightChild == null) -> {
 				if (node.key < node.parent!!.key) {
 					node.parent!!.leftChild = null
 				} else {
@@ -72,12 +84,12 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 				}
 				return
 			}
-			(!node.getColour() && ((node.leftChild != null) && (node.leftChild!!.getColour())))	-> {
+			(!node.getColour() && ((node.leftChild != null) && (node.leftChild!!.getColour()))) -> {
 				node.key = node.leftChild!!.key
 				node.leftChild = null
 				return
 			}
-			(!node.getColour() && (node.rightChild != null) && (node.rightChild!!.getColour()))	-> {
+			(!node.getColour() && (node.rightChild != null) && (node.rightChild!!.getColour())) -> {
 				node.key = node.rightChild!!.key
 				node.rightChild = null
 				return
@@ -97,7 +109,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		return
 	}
 	
-	private fun case1(node: Node<K, V>) {
+	private fun case1(node: BinaryNode<K, V>) {
 		if (node == root) {
 			node.isRed = Colour.Black
 			return
@@ -110,7 +122,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		}
 	}
 	
-	private fun case2Left(node: Node<K, V>) {
+	private fun case2Left(node: BinaryNode<K, V>) {
 		val brother = node.brother()
 		
 		if (brother!!.getColour()) {
@@ -124,7 +136,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		case3(node)
 	}
 	
-	private fun case2Right(node: Node<K, V>) {
+	private fun case2Right(node: BinaryNode<K, V>) {
 		val brother = node.brother()
 		
 		if (brother!!.getColour()) {
@@ -138,7 +150,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		case3(node)
 	}
 	
-	private fun case3(node: Node<K, V>) {
+	private fun case3(node: BinaryNode<K, V>) {
 		val brother = node.brother()
 		
 		if (((brother!!.leftChild == null) || !brother.leftChild!!.getColour())
@@ -162,7 +174,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		}
 	}
 	
-	private fun case4Left(node: Node<K, V>) {
+	private fun case4Left(node: BinaryNode<K, V>) {
 		val brother = node.brother()
 		
 		if ((brother!!.rightChild == null) || !brother.rightChild!!.getColour()) {
@@ -176,7 +188,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		case5Left(node)
 	}
 	
-	private fun case4Right(node: Node<K, V>) {
+	private fun case4Right(node: BinaryNode<K, V>) {
 		val brother = node.brother()
 		
 		if ((brother!!.leftChild == null) || !brother.leftChild!!.getColour()) {
@@ -190,7 +202,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		case5Right(node)
 	}
 	
-	private fun case5Left(node: Node<K, V>) {
+	private fun case5Left(node: BinaryNode<K, V>) {
 		val brother = node.brother()
 		
 		if ((brother!!.rightChild != null) && brother.rightChild!!.getColour()) {
@@ -203,7 +215,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		}
 	}
 	
-	private fun case5Right(node: Node<K, V>) {
+	private fun case5Right(node: BinaryNode<K, V>) {
 		val brother = node.brother()
 		
 		if ((brother!!.leftChild != null) && brother.leftChild!!.getColour()) {
@@ -217,7 +229,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 	}
 	
 	
-	private fun fixupAfterAdd(newNode: Node<K, V>) {
+	private fun fixupAfterAdd(newNode: BinaryNode<K, V>) {
 		if (newNode.parent == null) {
 			newNode.isRed = Colour.Black
 			
@@ -272,13 +284,13 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		}
 	}
 	
-	internal fun maxByNode(subRoot: Node<K, V>? = root): Node<K, V>? {
+	internal fun maxByNode(subRoot: BinaryNode<K, V>? = root): BinaryNode<K, V>? {
 		if (subRoot == null) {
 			return null
 		}
 		else {
-			var previousNode: Node<K, V> = subRoot
-			var currentNode: Node<K, V>? = subRoot
+			var previousNode: BinaryNode<K, V> = subRoot
+			var currentNode: BinaryNode<K, V>? = subRoot
 			
 			while (currentNode != null) {
 				previousNode = currentNode
@@ -289,13 +301,13 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 		}
 	}
 	
-	internal fun minByNode(subRoot: Node<K, V>? = root): Node<K, V>? {
+	internal fun minByNode(subRoot: BinaryNode<K, V>? = root): BinaryNode<K, V>? {
 		if (subRoot == null) {
 			return null
 		}
 		else {
-			var previousNode: Node<K, V> = subRoot
-			var currentNode: Node<K, V>? = subRoot
+			var previousNode: BinaryNode<K, V> = subRoot
+			var currentNode: BinaryNode<K, V>? = subRoot
 			
 			while (currentNode != null) {
 				previousNode = currentNode
@@ -307,7 +319,7 @@ class RBT <K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K
 	}
 	
 	internal fun getHeightByKey(key: K): Int {
-		var currentNode: Node<K, V>? = root
+		var currentNode: BinaryNode<K, V>? = root
 		var height: Int = 0
 		
 		loop@ while (currentNode != null) {

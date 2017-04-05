@@ -1,17 +1,25 @@
 /**
  * Created by yaroslav on 28.02.17.
  */
-class BST<K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K, V>, Iterable<Node<K, V>> {
-	override fun getRoot(): Node<K, V>? {
-		return root
-	}
+class BST<K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : Tree<K, V>, Iterable<BinaryNode<K, V>> {
 	
-	override fun iterator(): Iterator<Node<K, V>> {
+	override fun iterator(): Iterator<BinaryNode<K, V>> {
 		return BSTIterator(this)
 	}
 	
-	override fun searchByKey(key: K): Node<K, V>? {
-		var currentNode: Node<K, V>? = root
+	override fun search(key: K): V? {
+		val currentNode = searchByKey(key)
+		
+		if (currentNode == null) {
+			return null
+		}
+		else {
+			return currentNode.value
+		}
+	}
+	
+	private fun searchByKey(key: K): BinaryNode<K, V>? {
+		var currentNode: BinaryNode<K, V>? = root
 		
 		loop@ while (currentNode != null) {
 			when {
@@ -24,10 +32,10 @@ class BST<K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K,
 		return currentNode
 	}
 		
-	override fun addByKey(key: K, value: V) {
-		val newNode = Node<K, V>(key, value)
-		var currentNode: Node<K, V>? = root
-		var previousNode: Node<K, V>? = null
+	override fun insert(key: K, value: V) {
+		val newNode = BinaryNode<K, V>(key, value)
+		var currentNode: BinaryNode<K, V>? = root
+		var previousNode: BinaryNode<K, V>? = null
 		
 		while (currentNode != null) {
 			previousNode = currentNode
@@ -48,7 +56,7 @@ class BST<K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K,
 		}
 	}
 	
-	override fun deleteNodeByKey(key: K, nodeStart: Node<K, V>?) {
+	override fun delete(key: K) {
 		val deletingNode = searchByKey(key) ?: return
 
 		when {
@@ -125,13 +133,13 @@ class BST<K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K,
 		}
 	}
 	
-	internal fun maxByNode(subRoot: Node<K, V>? = root): Node<K, V>? {
+	internal fun maxByNode(subRoot: BinaryNode<K, V>? = root): BinaryNode<K, V>? {
 		if (subRoot == null) {
 			return null
 		}
 		else {
-			var previousNode: Node<K, V> = subRoot
-			var currentNode: Node<K, V>? = subRoot
+			var previousNode: BinaryNode<K, V> = subRoot
+			var currentNode: BinaryNode<K, V>? = subRoot
 			
 			while (currentNode != null) {
 				previousNode = currentNode
@@ -142,13 +150,13 @@ class BST<K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K,
 		}
 	}
 	
-	internal fun minByNode(subRoot: Node<K, V>? = root): Node<K, V>? {
+	internal fun minByNode(subRoot: BinaryNode<K, V>? = root): BinaryNode<K, V>? {
 		if (subRoot == null) {
 			return null
 		}
 		else {
-			var previousNode: Node<K, V> = subRoot
-			var currentNode: Node<K, V>? = subRoot
+			var previousNode: BinaryNode<K, V> = subRoot
+			var currentNode: BinaryNode<K, V>? = subRoot
 			
 			while (currentNode != null) {
 				previousNode = currentNode
@@ -160,7 +168,7 @@ class BST<K : Comparable<K>, V>(internal var root: Node<K, V>? = null) : Tree<K,
 	}
 	
 	internal fun getHeightByKey(key: K): Int {
-		var currentNode: Node<K, V>? = root
+		var currentNode: BinaryNode<K, V>? = root
 		var height: Int = 0
 		
 		loop@ while (currentNode != null) {
