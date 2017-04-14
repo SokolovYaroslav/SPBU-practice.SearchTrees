@@ -7,7 +7,7 @@ class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : 
 		return RBTIterator(this)
 	}
 	
-	public fun isItRbTree():Boolean {
+	internal fun isItRbTree():Boolean {
 		if (root==null) return true
 		return blackHeight(root!!)>=0
 	}
@@ -353,22 +353,22 @@ class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : 
 		return height
 	}
 	
-//	override fun equals(other: Any?): Boolean {
-//		if (this === other) return true
-//		if (other?.javaClass != javaClass) return false
-//
-//		other as RBT<*, *>
-//
-//		if (root != other.root) return false
-//
-//		val otherIterator = other.iterator()
-//
-//		for (node1 in this) {
-//			if (!otherIterator.hasNext()) return false
-//			if (node1 != otherIterator.next()) return false
-//		}
-//		if (otherIterator.hasNext()) return false
-//
-//		return true
-//	}
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (other?.javaClass != javaClass) return false
+
+		other as RBT<*, *>
+
+		if (root != other.root) return false
+
+		val otherIterator = other.iterator()
+
+		for (node1 in this) {
+			if (!otherIterator.hasNext()) return false
+			if (node1 != otherIterator.next()) return false
+		}
+		if (otherIterator.hasNext()) return false
+
+		return true
+	}
 }
