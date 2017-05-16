@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/GradleBuild_main.iml" filepath="$PROJECT_DIR$/.idea/modules/GradleBuild_main.iml" group="GradleBuild" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/GradleBuild_test.iml" filepath="$PROJECT_DIR$/.idea/modules/GradleBuild_test.iml" group="GradleBuild" />
       <module fileurl="file://$PROJECT_DIR$/NewSearchTrees.iml" filepath="$PROJECT_DIR$/NewSearchTrees.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Tree.iml" filepath="$PROJECT_DIR$/.idea/modules/Tree.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Tree_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Tree_main.iml" group="Tree" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Tree_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Tree_test.iml" group="Tree" />
     </modules>
   </component>
 </project>

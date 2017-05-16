@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="GradleBuild_main" target="1.5" />
       <module name="GradleBuild_test" target="1.5" />
+      <module name="Tree_main" target="1.8" />
+      <module name="Tree_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

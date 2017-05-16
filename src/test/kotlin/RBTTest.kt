@@ -1,6 +1,8 @@
-import org.junit.jupiter.api.Test
+@file:Suppress("DEPRECATION")
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.Test
+import junit.framework.Assert.*
+
 import java.util.*
 
 /**

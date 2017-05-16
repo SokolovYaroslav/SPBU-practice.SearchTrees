@@ -23,7 +23,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5">
     <output-test url="file://$MODULE_DIR$/../../GradleBuild/build/classes/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../GradleBuild/src/test">
