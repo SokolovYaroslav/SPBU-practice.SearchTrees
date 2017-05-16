@@ -4,31 +4,31 @@ import org.junit.jupiter.api.Assertions.*
 import java.util.*
 
 /**
- * Created by yaroslav on 16.03.17.
- */
+* Created by Yaroslav Sokolov on 16.03.17.
+*/
 internal class RBTTest {
-	
+
 	val random = Random()
 
 	@Test
 	fun colour1SizeTree() {
-		val tree = RBT<Int, Int>(BinaryNode(2, 90))
+		val tree = RedBlackTree.RBT<Int, Int>(BinaryNode(2, 90))
 		assertEquals(Colour.Black, tree.root!!.isRed)
 	}
 	@Test
 	fun searchInEmptyTree() {
-		val tree = RBT<Int, Int>()
+		val tree = RedBlackTree.RBT<Int, Int>()
 		assertEquals(null, tree.search(random.nextInt()))
 	}
 	@Test
 	fun searchInSize1Tree() {
-		val tree = RBT<Int, Int>(BinaryNode(100000, -1))
+		val tree = RedBlackTree.RBT<Int, Int>(BinaryNode(100000, -1))
 		assertEquals(null, tree.search(random.nextInt() % 100000))
 		assertEquals(-1, tree.search(100000))
 	}
 	@Test
 	fun insert() {
-		val iTree = RBT<Int, Int>(BinaryNode(4, 4))
+		val iTree = RedBlackTree.RBT<Int, Int>(BinaryNode(4, 4))
 
 		val one = BinaryNode<Int, Int>(1, 1)
 
@@ -69,7 +69,7 @@ internal class RBTTest {
 		eight.rightChild = twelve
 		twelve.parent = eight
 
-		val tree = RBT<Int, Int>(BinaryNode(7, 7))
+		val tree = RedBlackTree.RBT<Int, Int>(BinaryNode(7, 7))
 		tree.insert(1, 1)
 		tree.insert(4, 4)
 		tree.insert(8, 8)
@@ -81,7 +81,7 @@ internal class RBTTest {
 	}
 	@Test
 	fun randomSearch() {
-		val tree = RBT<Int, Int>()
+		val tree = RedBlackTree.RBT<Int, Int>()
 		for (i in 0..10000) {
 			tree.insert(i, i)
 		}
@@ -90,7 +90,7 @@ internal class RBTTest {
 	}
 	@Test
 	fun iterator() {
-		val tree = RBT<Int, Int>()
+		val tree = RedBlackTree.RBT<Int, Int>()
 		for (i in 1..2000)
 		{
 			val j = random.nextInt()
@@ -104,7 +104,7 @@ internal class RBTTest {
 	}
 	@Test
 	fun randomInsert() {
-		val tree = RBT<Int, Int>()
+		val tree = RedBlackTree.RBT<Int, Int>()
 		for (i in 0..1000) {
 			val j = random.nextInt()
 			tree.insert(j,j)
@@ -114,12 +114,12 @@ internal class RBTTest {
 	}
 	@Test
 	fun deleteFromEmptyTree() {
-		val tree = RBT<Int, Int>()
+		val tree = RedBlackTree.RBT<Int, Int>()
 		tree.delete(random.nextInt())
 	}
 	@Test
 	fun randomDelete() {
-		val tree = RBT<Int, Int>()
+		val tree = RedBlackTree.RBT<Int, Int>()
 		for (i in 0..10000) {
 			tree.insert(i, i)
 		}
@@ -131,7 +131,7 @@ internal class RBTTest {
 	}
 	@Test
 	fun hardTest() {
-		val tree = RBT<Int, Int>()
+		val tree = RedBlackTree.RBT<Int, Int>()
 		for (i in 1..20000000)
 		{
 			tree.insert(i,i)

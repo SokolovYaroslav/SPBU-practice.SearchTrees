@@ -1,6 +1,10 @@
+package BinarySearchTree
+import BinaryNode
+import Tree
+
 /**
- * Created by yaroslav on 28.02.17.
- */
+* Created by Yaroslav Sokolov on 28.02.17.
+*/
 class BST<K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : Tree<K, V>, Iterable<BinaryNode<K, V>> {
 	
 	override fun iterator(): Iterator<BinaryNode<K, V>> {

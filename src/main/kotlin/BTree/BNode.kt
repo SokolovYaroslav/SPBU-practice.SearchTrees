@@ -1,6 +1,9 @@
+package BTree
+import Node
+
 /**
- * Created by yaroslav on 31.03.17.
- */
+* Created by Yaroslav Sokolov on 31.03.17.
+*/
 class BNode <K : Comparable<K>, V>() : Node<K, V> {
 	
 	var leaf: Boolean = true

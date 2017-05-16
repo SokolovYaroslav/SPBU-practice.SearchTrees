@@ -1,6 +1,10 @@
+package RedBlackTree
+import Tree
+import BinaryNode
+
 /**
- * Created by yaroslav on 05.03.17.
- */
+* Created by Yaroslav Sokolov on 05.03.17.
+*/
 class RBT <K : Comparable<K>, V>(internal var root: BinaryNode<K, V>? = null) : Tree<K, V>, Iterable<BinaryNode<K, V>>{
 	
 	override fun iterator(): Iterator<BinaryNode<K, V>> {

@@ -1,8 +1,13 @@
+package RedBlackTree
+import Printer
+import Tree
+
 /**
- * Created by yaroslav on 05.03.17.
- */
-class RBTPrinter <K : Comparable<K>, V> {
-	public fun print(tree: RBT<K, V>) {
+* Created by Yaroslav Sokolov on 05.03.17.
+*/
+class RBTPrinter <K : Comparable<K>, V> : Printer<K, V> {
+	override public fun print(tree: Tree<K, V>) {
+		tree as RBT
 		for (node in tree) {
 			for (i in 1..tree.getHeightByKey(node.key) * 5) {
 				print(' ')

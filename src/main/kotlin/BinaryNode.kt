@@ -1,6 +1,8 @@
+import RedBlackTree.RBT
+
 /**
- * Created by yaroslav on 27.02.17.
- */
+* Created by Yaroslav Sokolov on 27.02.17.
+*/
 class BinaryNode<K : Comparable<K>, V>(internal var key: K, internal var value: V) : Node<K, V> {
 	
 	override fun equals(other: Any?): Boolean {
@@ -12,6 +14,10 @@ class BinaryNode<K : Comparable<K>, V>(internal var key: K, internal var value: 
 			}
 		}
 		return false
+	}
+
+	override fun hashCode(): Int {
+		return super.hashCode()
 	}
 	
 	internal var isRed: Colour = Colour.Black

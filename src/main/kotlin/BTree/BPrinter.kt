@@ -1,8 +1,13 @@
+package BTree
+import Printer
+import Tree
+
 /**
- * Created by yaroslav on 31.03.17.
- */
-class BPrinter <K : Comparable<K>, V> {
-	public fun print(tree: BTree<K, V>) {
+* Created by Yaroslav Sokolov on 31.03.17.
+*/
+class BPrinter <K : Comparable<K>, V> : Printer<K, V>{
+	override public fun print(tree: Tree<K, V>) {
+		tree as BTree
 		var current = 1
 		var next = 0
 		for (node in tree) {

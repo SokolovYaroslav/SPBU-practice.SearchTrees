@@ -1,10 +1,12 @@
+package BTree
+
 import java.util.*
-import kotlin.reflect.jvm.internal.impl.serialization.deserialization.FlexibleTypeDeserializer
+import Tree
 
 /**
- * Created by yaroslav on 31.03.17.
- */
-class BTree <K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val t: Int = 1000) : Tree<K, V>, Iterable<BNode<K, V>>{
+* Created by Yaroslav Sokolov on 31.03.17.
+*/
+class BTree<K : Comparable<K>, V>(internal var root: BNode<K, V> = BNode(), val t: Int = 1000) : Tree<K, V>, Iterable<BNode<K, V>>{
 	override fun iterator(): Iterator<BNode<K, V>> {
 		return (object : Iterator<BNode<K, V>> {
 			var queue = LinkedList<BNode<K, V>>()

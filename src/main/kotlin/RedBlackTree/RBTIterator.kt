@@ -1,7 +1,10 @@
+package RedBlackTree
+import BinaryNode
+
 /**
- * Created by yaroslav on 14.03.17.
- */
-class BSTIterator<K : Comparable<K>, V>(val tree: BST<K, V>): Iterator<BinaryNode<K, V>> {
+* Created by Yaroslav Sokolov on 03.03.17.
+*/
+class RBTIterator<K : Comparable<K>, V>(val tree: RBT<K, V>): Iterator<BinaryNode<K, V>> {
 	
 	var next = tree.maxByNode()
 	
@@ -21,7 +24,7 @@ class BSTIterator<K : Comparable<K>, V>(val tree: BST<K, V>): Iterator<BinaryNod
 			}
 			next = next!!.parent
 		}
-		
+			
 		return previousNode!!
 	}
 }
