@@ -6,25 +6,16 @@
 Сравнительные тесты различных типов деревьев поиска представлены ниже:
 
 ## BinarySearch Tree
+## Searching value in tree
 
-|Quatity of Nodes|Search(random), ms|Search(Ascending), ms|
-|----------------|--------------|-------------------------|
-|100             |0,0424        |0,041                    |
-|10 000          |0,0488        |0,4577                   |
-|1 000 000       |0,045         |TOO LONG                 |
+|Amount of valuses|Ordered or Randomize|Binary Search tree, μs|Red-Black tree, μs|B-tree, μs|
+|-----------------|----------------|---------------|------------------|----------|
+|100              |Randomize|3.9|10.5|51|
+|100              |Ordered|10|6.3|0.9|
+|10 000           |Randomize|50|173|309|
+|10 000           |Ordered|1677|160|26|
+|1 000 000        |Randomize|3156|8855|1690|
+|1 000 000        |Ordered|TOO LONG|7256|210|
 
-## Red-Black Tree
-
-|Quatity of Nodes|Search, ms|
-|----------------|-------|
-|100             |0,03   |
-|10 000          |0,0646 |
-|1 000 000       |0,0456 |
-
-## BTree
-
-|Quatity of Nodes|Search, ms      |
-|----------------|------------|
-|100             |0,04 |
-|10 000          |0,041      |
-|1 000 000       |0,043       |
+As you can see from this table, **with evenly spread values Binary Search tree can be as fast as Red-Black tree**. 
+B-tree has a very good search time, but **only if the number of values is large**.
