@@ -1,12 +1,9 @@
 
 # Search Trees
 
-Реализация различных деревьев поиска.
+## Perfomance analisys of different search trees
 
-Сравнительные тесты различных типов деревьев поиска представлены ниже:
-
-## BinarySearch Tree
-## Searching value in tree
+### Searching value in tree
 
 |Amount of valuses|Ordered or Randomize|Binary Search tree, μs|Red-Black tree, μs|B-tree, μs|
 |-----------------|----------------|---------------|------------------|----------|
@@ -18,4 +15,5 @@
 |1 000 000        |Ordered|TOO LONG|7256|210|
 
 As you can see from this table, **with evenly spread values Binary Search tree can be as fast as Red-Black tree**. 
+
 B-tree has a very good search time, but **only if the number of values is large**.
