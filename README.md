@@ -5,7 +5,7 @@
 
 ### Searching value in tree
 
-|Amount of valuses|Ordered or Randomize|Binary Search tree, μs|Red-Black tree, μs|B-tree, μs|
+|Amount of valuses|Ordered or Randomize|Binary Search tree, ms|Red-Black tree, ms|B-tree, ms|
 |-----------------|----------------|---------------|------------------|----------|
 |100              |Randomize|3.9|10.5|51|
 |100              |Ordered|10|6.3|0.9|
